@@ -22,9 +22,10 @@ class MainApp extends StatelessWidget {
 class ArticleModel {
   Future<Summary> getRandomArticle() async {
     final uri = Uri.https(
-      'en.wikipedia.com'
-      'api/rest_v1/page/random/summary',
-    );
+  'ru.wikipedia.org',
+  '/api/rest_v1/page/random/summary',
+  );
+
     final response = await get(uri);
     if (response.statusCode != 200) {
       throw HttpException("Failed to update resourse");
@@ -34,18 +35,18 @@ class ArticleModel {
 }
 
 class AricleViewModel extends ChangeNotifier {
-  final ArticleModel model;
+  final ArticleModel repository;
   Summary? summary;
   Exception? error;
   bool isLoading = false;
-  AricleViewModel(this.model) {
+  AricleViewModel(this.repository) {
     fetchArticle();
   }
   void fetchArticle() async {
     isLoading = true;
     notifyListeners();
     try {
-      summary = await model.getRandomArticle();
+      summary = await repository.getRandomArticle(); 
       error = null;
     } on HttpException catch (e) {
       summary = null;
