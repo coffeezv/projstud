@@ -4,7 +4,7 @@ import 'package:wiki_reader/summary.dart';
 
 class ArticleState {}
 
-class ArticleInitial extends ArticleState {}
+class ArticleIntial extends ArticleState {}
 
 class ArticleLoading extends ArticleState {}
 
@@ -20,7 +20,9 @@ class ArticleError extends ArticleState {
 
 class ArticleCubit extends Cubit<ArticleState> {
   final _repo = RandomArticleRepository();
-  ArticleCubit() : super(ArticleInitial());
+  ArticleCubit() : super(ArticleIntial()) {
+    updateArticle();
+  }
   void updateArticle() async {
     emit(ArticleLoading());
     try {
