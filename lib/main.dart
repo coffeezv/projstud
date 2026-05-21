@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:wiki_reader/go_router.dart';
-import 'package:wiki_reader/summary_hive_box.dart';
+import 'package:wiki_reader/summary.dart';
+import 'package:wiki_reader/summary_adapter.dart';
+import 'package:hive/hive.dart';
+
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox(summaryHiveBox);
-    
+  Hive.registerAdapter(SummaryAdapter());
+  await Hive.deleteBoxFromDisk('summaryHiveBox');
+  await Hive.openBox<Summary>('summaryhivebox');
   runApp(const MainApp());
 }
 

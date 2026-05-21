@@ -15,7 +15,7 @@ class ArticleView extends StatelessWidget {
             ArticleError(error: var e) => Text('Error $e'),
             ArticleLoaded(summary: var s) => ArticlePage(
               summary: s,
-              nextArticle: context.read<ArticleCubit>().updateArticle,
+              nextArticle: context.read<ArticleCubit>().updateArticle, saveToDB: () {  },
             ),
             ArticleIntial() => Text('initial'),
             _ => Text('Something'),
