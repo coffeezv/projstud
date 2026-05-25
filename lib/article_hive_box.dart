@@ -1,21 +1,20 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:wiki_reader/summary.dart';
 import 'package:hive/hive.dart';
 
-const summaryHiveBox = "summaryhivebox";
+const articleHiveBox = "articleHiveBox";
 
-class SummaryHiveBox {
-  static Box<Summary> get box => Hive.box<Summary>(summaryHiveBox);
-  static void create(Summary summary) {
-    box.put(summary.pageId.toString(), summary);
+class ArticleHiveBox {
+  static final articleBox = Hive.box<Article>(articleHiveBox);
+  static void create(key, summary) {
+    articleBox.put(key, summary);
   }
 
-  static Summary? get(String key) {
-    return box.get(key);
+  static Article? get(key) {
+    return articleBox.get(key);
   }
 
-  static List<Summary> getAll() {
-    return box.values.toList();
+  static List<Article?> getAll() {
+    return articleBox.keys.map((key) => articleBox.get(key)).toList();
   }
 }
 
@@ -29,19 +28,20 @@ class Article {
   final String? description;
   @HiveField(3)
   final int id;
-
+  @HiveField(4)
+  final String extract;
   const Article({
     required this.id,
     required this.titles,
-    this.imageSource,
     this.description,
+    this.imageSource,
+    required this.extract,
   });
 }
 
 class ArticleAdapter extends TypeAdapter<Article> {
   @override
-  final int typeId = 1;
-
+  final typeId = 1;
   @override
   Article read(BinaryReader reader) {
     return Article(
@@ -49,6 +49,7 @@ class ArticleAdapter extends TypeAdapter<Article> {
       imageSource: reader.read() as String,
       description: reader.read() as String,
       id: reader.read() as int,
+      extract: reader.read() as String,
     );
   }
 
@@ -56,10 +57,8 @@ class ArticleAdapter extends TypeAdapter<Article> {
   void write(BinaryWriter writer, Article obj) {
     writer.write(obj.titles);
     writer.write(obj.imageSource);
+    writer.write(obj.description);
+    writer.write(obj.id);
+    writer.write(obj.extract);
   }
-}
-
-Future main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(ArticleAdapter());
 }
