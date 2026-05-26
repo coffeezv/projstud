@@ -14,12 +14,12 @@ class FavItemInitial extends FavItemState {
   
 }
 
-class FavItemCubit extends Cubit<FavItemCubit> {
-  FavItemCubit() : super(FavItemInitial() as FavItemCubit);
+class FavItemCubit extends Cubit<FavItemState> {
+  FavItemCubit() : super(FavItemInitial());
   
   void setFavItem(Article a) {
     final state = FavItemChosen(article: a);
-    emit(state as FavItemCubit);
+    emit(state);
   }
 }
 
@@ -28,12 +28,12 @@ class FavItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocBuilder<FavItemCubit, FavItemState>(
+    return BlocBuilder<FavItemCubit, FavItemState>(
       builder: (context, state) {
         return switch (state) {
           FavItemChosen(article: var a) => ArticleWidget(
-            titles: '',
-            extract: '',
+            titles: a.titles,
+            extract: a.extract,
           ),
           _ => Text("Something went wrong"),
         };

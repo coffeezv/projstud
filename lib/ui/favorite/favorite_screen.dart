@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wiki_reader/article_hive_box.dart';
 import 'package:wiki_reader/ui/favorite/favorite_view.dart';
 
@@ -7,10 +7,11 @@ class FavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FavoriteView(
+    return FavoriteView(
       summaries: ArticleHiveBox.getAll(),
-      box: null,
-      onTap: (){});
+      box: ArticleHiveBox.articleBox,
+      onTap: (){},
+    );
   }
   
 }

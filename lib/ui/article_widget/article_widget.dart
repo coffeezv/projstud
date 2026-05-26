@@ -10,7 +10,7 @@ class ArticleWidget extends StatelessWidget {
     required this.titles,
     this.imageSource,
     this.description,
-    required this.extract
+    required this.extract,
   });
   @override
   Widget build(BuildContext context) {

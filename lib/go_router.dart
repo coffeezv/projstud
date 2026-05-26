@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_provider/go_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wiki_reader/root_screen.dart';
 import 'package:wiki_reader/ui/article_screen/article_screen.dart';
 import 'package:wiki_reader/ui/favorite/favorite_item_cubit.dart';
-import 'package:wiki_reader/ui/favorite/favorite_view.dart';
-import 'package:wiki_reader/article_hive_box.dart';
+import 'package:wiki_reader/ui/favorite/favorite_screen.dart';
 
 final router = GoRouter(
   initialLocation: "/random",
@@ -24,13 +24,19 @@ final router = GoRouter(
         ),
         StatefulShellBranch(
           routes: [
-            GoRoute(
+            GoProviderRoute(
               path: "/fav",
-              builder: (context, state) => BlocBuilder(),
-              routes: [
-                GoRoute(path: "item", builder: (_, _) => Text("FavItem")),
+              builder: (context, state) => FavScreen(),
+              providers: (context, state) => [
+                BlocProvider(
+                  create: (_) => FavItemCubit()
+                )
               ],
-            ),
+              routes: [GoRoute(
+                path: "item", 
+                builder: (context, state) => Text(' '),
+              ),]
+            )
           ],
         ),
       ],
